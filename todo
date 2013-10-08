@@ -1,6 +1,5 @@
 tesera todo:
 
-realtime score screen
 menu
 high score screen
 music
@@ -8,10 +7,11 @@ levels - speed-up
 background pic
 not updating w/o focus!
 help/controls screen
-game over screen
 
 done
 actually remove lines.
 hide yellow rows
+realtime score screen
+game over screen
 
 
