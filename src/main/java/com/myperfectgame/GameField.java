@@ -1,5 +1,6 @@
 package com.myperfectgame;
 
+import com.myperfectgame.blocks.*;
 import org.newdawn.slick.Color;
 
 import java.util.Random;

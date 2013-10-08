@@ -1,5 +1,6 @@
 package com.myperfectgame;
 
+import com.myperfectgame.blocks.*;
 import org.newdawn.slick.*;
 
 import java.util.LinkedList;
@@ -92,16 +93,11 @@ public class TestRun extends BasicGame {
 			offsetY = 0;
 			
 			if(gameField.checkMoveBlock(block, offsetX, offsetY) == false) {
-				//gameOver();
-				System.out.println("Game over");
-				System.out.println("Lines cleared: " + totalClearedLines);
-				System.out.println("Blocks placed: " + totalBlocks);
-				System.out.println("Score: " + totalScore);
-				System.exit(1);
+				gameOver();
 			}
 
 		}
-		
+
 		// only allow moves every so often
 		if(inputDelta < 0) {
 			Input input = container.getInput();
@@ -253,9 +249,7 @@ public class TestRun extends BasicGame {
                         if ((offsetY+j)>1) {
                             g.fillRect(BLOCK_START_X + 1 + (i+offsetX)*BLOCKSIZE, BLOCK_START_Y + 1 + (j+offsetY)*BLOCKSIZE, BLOCKSIZE -2, BLOCKSIZE -2);
                         }
-                        System.out.println("offsetY: " + offsetY);
-                        System.out.println("j: " + j);
-                        //System.out.println("offsetX: " + offsetX);
+
                     }
 				}
 			}
@@ -267,25 +261,35 @@ public class TestRun extends BasicGame {
 				for(int j=0; j<4; j++) {
 					if(upcomingBlocks.getFirst().getBlock(i, j)) {					
 						g.setColor(upcomingBlocks.getFirst().getColor());
-						g.fillRect(BLOCK_START_X + 1 + i*BLOCKSIZE + 310, BLOCK_START_Y + 1 + j*BLOCKSIZE, BLOCKSIZE -2, BLOCKSIZE -2);
+						g.fillRect(BLOCK_START_X + 1 + i*BLOCKSIZE + 310, BLOCK_START_Y + 1 + (j+3)*BLOCKSIZE, BLOCKSIZE -2, BLOCKSIZE -2);
 
 					}
 					else {
 						g.setColor(Color.gray);
-						g.drawRect(BLOCK_START_X + i*BLOCKSIZE + 310, BLOCK_START_Y + j*BLOCKSIZE, BLOCKSIZE, BLOCKSIZE);
+						g.drawRect(BLOCK_START_X + i*BLOCKSIZE + 310, BLOCK_START_Y + (j+3)*BLOCKSIZE, BLOCKSIZE, BLOCKSIZE);
 						g.setColor(Color.white);
-						g.fillRect(BLOCK_START_X + 1 + i*BLOCKSIZE + 310, BLOCK_START_Y + 1 + j*BLOCKSIZE, BLOCKSIZE -2, BLOCKSIZE -2);
+						g.fillRect(BLOCK_START_X + 1 + i*BLOCKSIZE + 310, BLOCK_START_Y + 1 + (j+3)*BLOCKSIZE, BLOCKSIZE -2, BLOCKSIZE -2);
 					}
 				}
 			}
 		}
+        g.drawString("Next:", 500, 100);
         // draw score
-        g.drawString("Total score:", 20, 50);
-        g.drawString(totalScore + "", 50, 70);
+        g.drawString("Total score:", 20, 100);
+        g.drawString(totalScore + "", 50, 120);
 
 	}
 
-	public static void main(String[] args) {
+    private void gameOver() {
+        System.out.println("Game over");
+        System.out.println("Lines cleared: " + totalClearedLines);
+        System.out.println("Blocks placed: " + totalBlocks);
+        System.out.println("Score: " + totalScore);
+        System.exit(1);
+    }
+
+
+    public static void main(String[] args) {
 		try {
 			AppGameContainer app = new AppGameContainer(new TestRun());
 			app.setDisplayMode(RES_WIDTH, RES_HEIGHT, false);
