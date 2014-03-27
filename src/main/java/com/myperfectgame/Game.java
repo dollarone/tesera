@@ -5,10 +5,7 @@ package com.myperfectgame;
  * Time: 16:34
  */
 
-import com.myperfectgame.states.GameOver;
-import com.myperfectgame.states.NewGame;
-import com.myperfectgame.states.Pause;
-import com.myperfectgame.states.Play;
+import com.myperfectgame.states.*;
 import org.newdawn.slick.AppGameContainer;
 import org.newdawn.slick.GameContainer;
 import org.newdawn.slick.SlickException;
@@ -30,6 +27,7 @@ public class Game extends StateBasedGame{
 
     public Game(String gamename){
         super(gamename);
+        this.addState(new Menu(menu));
         this.addState(new NewGame(new_game));
         this.addState(new Play(play));
         this.addState(new Pause(pause));
@@ -49,7 +47,7 @@ public class Game extends StateBasedGame{
     /*
      */
     public void initStatesList(GameContainer gc) throws SlickException{
-//        this.getState(menu).init(gc, this);
+        this.getState(menu).init(gc, this);
         this.getState(new_game).init(gc, this);
         this.getState(play).init(gc, this);
         this.getState(pause).init(gc, this);
@@ -66,7 +64,7 @@ public class Game extends StateBasedGame{
         //end broken states
         this.enterState(menu);
         */
-        this.enterState(play);
+        this.enterState(menu);
     }
 
     public static void main(String[] args) {

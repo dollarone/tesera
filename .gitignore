@@ -1,3 +1,5 @@
 .idea/*
 lib/*
 *.class
+resources/back.x*
+tesera.iml

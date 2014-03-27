@@ -3,10 +3,10 @@ package com.myperfectgame.blocks;
 import com.myperfectgame.Config;
 import org.newdawn.slick.Color;
 
-public class ZBlock extends AbstractBlock implements Block {
+public class ZBlock extends AbstractBlock<Boolean> implements Block<Boolean> {
 
 	public ZBlock() {
-		blocks = new boolean[][] { 
+		blocks = new Boolean[][] {
 		{ false, true,  false, false, },
 		{ false, true,  true,  false, },
 		{ false, false, true,  false, },
@@ -18,7 +18,7 @@ public class ZBlock extends AbstractBlock implements Block {
 		return Config.ZBLOCKCOLOUR;
 	}
 	@Override
-	public boolean[][] rotateClockWise() {
+	public Boolean[][] rotateClockWise() {
 		if(blocks[2][1] == true) {
 			return super.rotateCounterClockWise();
 		}
@@ -26,7 +26,7 @@ public class ZBlock extends AbstractBlock implements Block {
 	}
 
 	@Override
-	public boolean[][] rotateCounterClockWise() {
+	public Boolean[][] rotateCounterClockWise() {
 		if(blocks[1][2] == true) {
 			return super.rotateClockWise();
 		}

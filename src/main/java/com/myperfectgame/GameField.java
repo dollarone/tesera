@@ -2,6 +2,7 @@ package com.myperfectgame;
 
 import com.myperfectgame.blocks.*;
 import org.newdawn.slick.Color;
+import org.newdawn.slick.Image;
 
 import java.util.Random;
 
@@ -54,12 +55,12 @@ public class GameField {
 		
 	}
 	
-	public boolean checkMoveBlock(Block b, int offsetX, int offsetY) {
-		boolean [][] newBlock = b.getBlocks();
+	public boolean checkMoveBlock(Block<Image> b, int offsetX, int offsetY) {
+		Image[][] newBlock = b.getBlocks();
 		
 		for(int i=0; i<newBlock.length; i++) {
 			for(int j=0; j<newBlock.length; j++) {
-				if(newBlock[i][j]) {
+				if(null != newBlock[i][j]) {
 					if(i+offsetX < 0 || i+offsetX >= GAMEFIELDWIDTH ||
 							j+offsetY < 0 || j+offsetY >= GAMEFIELDHEIGHT) {
 						return false;
@@ -76,12 +77,12 @@ public class GameField {
 	}
 	
 	// this sucks. need to think harder how to deal with moving block VS gameField. Separate them, draw block separately until it merges.
-	public void moveBlock(Block b, int offsetX, int offsetY) {
-		boolean [][] newBlock = b.getBlocks();
+	public void moveBlock(Block<Image> b, int offsetX, int offsetY) {
+		Image[][] newBlock = b.getBlocks();
 
 		for(int i=0; i<newBlock.length; i++) {
 			for(int j=0; j<newBlock.length; j++) {
-				if(newBlock[i][j]) {
+				if(null != newBlock[i][j]) {
 					
 					if(j+offsetY-1 >= 0) {
 						blocks[i+offsetX][j+offsetY-1] = Config.NOBLOCKCOLOUR;
@@ -92,13 +93,13 @@ public class GameField {
 		}
 	}
 
-	public boolean glueBlock(Block b, int offsetX, int offsetY) {
+	public boolean glueBlock(Block<Image> b, int offsetX, int offsetY) {
 		
-		boolean [][] newBlock = b.getBlocks();
+		Image [][] newBlock = b.getBlocks();
 		
 		for(int i=0; i<newBlock.length; i++) {
 			for(int j=0; j<newBlock.length; j++) {
-				if(newBlock[i][j]) {
+				if(null != newBlock[i][j]) {
 					if(i+offsetX < 0 || i+offsetX >= GAMEFIELDWIDTH ||
 							j+offsetY < 0 || j+offsetY >= GAMEFIELDHEIGHT) {
 						return false;
@@ -118,7 +119,7 @@ public class GameField {
 	public boolean isLineFull(int lineY) {
 		
 		for(int x=0; x<GAMEFIELDWIDTH; x++) {
-			if(blocks[x][lineY] == Config.NOBLOCKCOLOUR) {
+			if(blocks[x][lineY] == null) {
 				return false;
 			}	
 		}
@@ -129,7 +130,7 @@ public class GameField {
     public boolean isLineEmpty(int lineY) {
 
         for(int x=0; x<GAMEFIELDWIDTH; x++) {
-            if(blocks[x][lineY] != Config.NOBLOCKCOLOUR) {
+            if(blocks[x][lineY] != null) {
                 return false;
             }
         }
@@ -143,7 +144,7 @@ public class GameField {
 		if(isLineFull(i)) {
 			totalClear++;
 			for(int x=0; x<GAMEFIELDWIDTH; x++) {
-				blocks[x][i] = Config.NOBLOCKCOLOUR;
+				blocks[x][i] = null;
 				
 			}
 		}

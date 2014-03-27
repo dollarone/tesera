@@ -1,13 +1,13 @@
 package com.myperfectgame.blocks;
 
-public abstract class AbstractBlock implements Block {
+public abstract class AbstractBlock<T> implements Block<T> {
 	
-	protected boolean[][] blocks; // = new boolean[4][4];
+	protected T[][] blocks; // = new boolean[4][4];
 	
 	@Override
-	public boolean[][] rotateClockWise() {
+	public T[][] rotateClockWise() {
 		
-		boolean tmp;
+		T tmp;
 		int n=4;
 		
 		// vector rotation algorithm
@@ -25,15 +25,15 @@ public abstract class AbstractBlock implements Block {
 		return blocks;
 	}
 	
-	public boolean getBlock(int i, int j) {
+	public T getBlock(int i, int j) {
 		return blocks[i][j];
 		
 	}
 
 	@Override
-	public boolean[][] rotateCounterClockWise() {
-		
-		boolean tmp;
+	public T[][] rotateCounterClockWise() {
+
+        T tmp;
 		int n=4;
 		
 		// vector rotation algorithm
@@ -51,7 +51,7 @@ public abstract class AbstractBlock implements Block {
 	}
 
 	@Override
-	public boolean[][] getBlocks() {
+	public T[][] getBlocks() {
 		return blocks;
 	}
 	
@@ -61,7 +61,7 @@ public abstract class AbstractBlock implements Block {
 		String tmp = new String();
 		for (int i=0; i<4; i++){
 			for (int j=0; j<4; j++){
-				tmp += blocks[i][j] ? "[X]" : "[ ]"; 
+				tmp += blocks[i][j].toString();
 			}
 			tmp += "\n";
 		}

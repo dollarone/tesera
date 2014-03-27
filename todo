@@ -7,6 +7,7 @@ levels - speed-up
 background pic
 not updating w/o focus!
 help/controls screen
+smooth scrolling - makes twisting really hard? or just calculate based on current pos (well, next)
 
 done
 actually remove lines.

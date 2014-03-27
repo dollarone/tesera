@@ -29,7 +29,7 @@ public class Play extends BasicGameState {
     private final int BLOCK_START_X = 150;
     private final int BLOCK_START_Y = 40;
 
-    private Block block;
+    private Block<Image> block;
     private int offsetX;
     private int offsetY;
 
@@ -45,7 +45,7 @@ public class Play extends BasicGameState {
     private int totalBlocks;
     private int totalScore;
 
-    private LinkedList<Block> upcomingBlocks;
+    private LinkedList<Block<Image>> upcomingBlocks;
 
     private boolean updateBlocks;
     private boolean isDead = false;
@@ -78,6 +78,7 @@ public class Play extends BasicGameState {
         if(upcomingBlocks.isEmpty()) {
             // generate new set of blocks
             upcomingBlocks.add(new IBlock());
+            /*
             upcomingBlocks.add(rand.nextInt(2), new LBlock());
             upcomingBlocks.add(rand.nextInt(3), new JBlock());
             upcomingBlocks.add(rand.nextInt(4), new OBlock());
@@ -88,6 +89,7 @@ public class Play extends BasicGameState {
                 System.out.println(foo.getClass() + ", " );
             }
             System.out.println("-------------" );
+            */
         }
 
         if(null == block) { //if new block needed
@@ -241,6 +243,12 @@ public class Play extends BasicGameState {
     public void render(GameContainer container, StateBasedGame sbg, Graphics g)
             throws SlickException {
 
+        renderDraw(container, sbg, g);
+    }
+
+    public void renderImages(GameContainer container, StateBasedGame sbg, Graphics g)
+            throws SlickException {
+
         if(updateBlocks) {
             for(int i=0; i<gameField.getWidth(); i++) {
                 for(int j=0; j<gameField.getHeight(); j++) {
@@ -259,7 +267,7 @@ public class Play extends BasicGameState {
         if(null != block) {
             for(int i=0; i<4; i++) {
                 for(int j=0; j<4; j++) {
-                    if(block.getBlock(i, j)) {
+                    if(null != block.getBlock(i, j)) {
                         //blocks[i+offsetX][j+offsetY] = b.getColor();
                         g.setColor(block.getColor());
                         //if ((BLOCK_START_Y + 1 + (j+offsetY)*BLOCKSIZE)>2) {
@@ -276,7 +284,7 @@ public class Play extends BasicGameState {
         if(upcomingBlocks.isEmpty() == false) {
             for(int i=0; i<4; i++) {
                 for(int j=0; j<4; j++) {
-                    if(upcomingBlocks.getFirst().getBlock(i, j)) {
+                    if(null != upcomingBlocks.getFirst().getBlock(i, j)) {
                         g.setColor(upcomingBlocks.getFirst().getColor());
                         g.fillRect(BLOCK_START_X + 1 + i*BLOCKSIZE + 310, BLOCK_START_Y + 1 + (j+3)*BLOCKSIZE, BLOCKSIZE -2, BLOCKSIZE -2);
 
@@ -294,6 +302,75 @@ public class Play extends BasicGameState {
         // draw score
         g.drawString("Total score:", 20, 100);
         g.drawString(totalScore + "", 50, 120);
+
+
+    }
+
+    public void renderDraw(GameContainer container, StateBasedGame sbg, Graphics g)
+            throws SlickException {
+
+
+        if(updateBlocks) {
+            for(int i=0; i<gameField.getWidth(); i++) {
+                for(int j=0; j<gameField.getHeight(); j++) {
+                    g.setColor(Color.gray);
+                    if(j>1) {
+                        g.drawRect(BLOCK_START_X + i*BLOCKSIZE, BLOCK_START_Y + j*BLOCKSIZE, BLOCKSIZE, BLOCKSIZE);
+                    }
+                    g.setColor(gameField.getBlock(i, j));
+                    if(j>1) {
+                        g.fillRect(BLOCK_START_X + 1 + i*BLOCKSIZE, BLOCK_START_Y + 1 + j*BLOCKSIZE, BLOCKSIZE -2, BLOCKSIZE -2);
+                    }
+                }
+            }
+        }
+
+        if(null != block) {
+            for(int i=0; i<4; i++) {
+                for(int j=0; j<4; j++) {
+                    if(null != block.getBlock(i, j)) {
+                        //blocks[i+offsetX][j+offsetY] = b.getColor();
+                        g.setColor(block.getColor());
+                        //if ((BLOCK_START_Y + 1 + (j+offsetY)*BLOCKSIZE)>2) {
+                        if ((offsetY+j)>1) {
+                            g.fillRect(BLOCK_START_X + 1 + (i+offsetX)*BLOCKSIZE, BLOCK_START_Y + 1 + (j+offsetY)*BLOCKSIZE, BLOCKSIZE -2, BLOCKSIZE -2);
+                        }
+
+                    }
+                }
+            }
+        }
+
+        // draw upcoming block:
+        if(upcomingBlocks.isEmpty() == false) {
+            for(int i=0; i<4; i++) {
+                for(int j=0; j<4; j++) {
+                    if(null != upcomingBlocks.getFirst().getBlock(i, j)) {
+                        g.setColor(upcomingBlocks.getFirst().getColor());
+                        g.fillRect(BLOCK_START_X + 1 + i*BLOCKSIZE + 310, BLOCK_START_Y + 1 + (j+3)*BLOCKSIZE, BLOCKSIZE -2, BLOCKSIZE -2);
+
+                    }
+                    else {
+                        g.setColor(Color.gray);
+                        g.drawRect(BLOCK_START_X + i*BLOCKSIZE + 310, BLOCK_START_Y + (j+3)*BLOCKSIZE, BLOCKSIZE, BLOCKSIZE);
+                        g.setColor(Color.white);
+                        g.fillRect(BLOCK_START_X + 1 + i*BLOCKSIZE + 310, BLOCK_START_Y + 1 + (j+3)*BLOCKSIZE, BLOCKSIZE -2, BLOCKSIZE -2);
+                    }
+                }
+            }
+        }
+        g.drawString("Next:", 500, 100);
+        // draw score
+        g.drawString("Total score:", 20, 100);
+        g.drawString(totalScore + "", 50, 120);
+
+        // example on how to use image:
+        Image img = new Image("resources/1BY4QUEST.PNG");
+        img.setFilter(Image.FILTER_NEAREST);
+        g.drawImage(img, 5, 5);
+
+        // plan: in the init part, load images.
+        // first plan: try loading in real-time.each block is different, so create each block-part from the image as needed.
 
     }
 
@@ -317,7 +394,7 @@ public class Play extends BasicGameState {
         frameCount = 0;
         deltaCounter = 500;
         inputDelta = 0;
-        upcomingBlocks = new LinkedList<Block>();
+        upcomingBlocks = new LinkedList<Block<Image>>();
 
         clearedLines = 0;
         totalClearedLines = 0;
@@ -334,10 +411,10 @@ public class Play extends BasicGameState {
             isDead = false;
         }
     }
-
+            /*
     public static void main(String[] args) {
         try {
-            AppGameContainer app = new AppGameContainer(new TestRun());
+            AppGameContainer app = new AppGameContainer(new Game());
             app.setDisplayMode(RES_WIDTH, RES_HEIGHT, false);
             app.start();
         }
@@ -346,4 +423,5 @@ public class Play extends BasicGameState {
         }
 
     }
+    */
 }

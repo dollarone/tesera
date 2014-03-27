@@ -2,12 +2,12 @@ package com.myperfectgame.blocks;
 
 import org.newdawn.slick.Color;
 
-public interface Block {
+public interface Block<T> {
 
-	public boolean[][] rotateClockWise();
-	public boolean[][] rotateCounterClockWise();	
-	public boolean[][] getBlocks();
+	public T[][] rotateClockWise();
+	public T[][] rotateCounterClockWise();
+	public T[][] getBlocks();
 	public Color getColor();
-	public boolean getBlock(int i, int j);
+	public T getBlock(int i, int j);
 	
 }
