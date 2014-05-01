@@ -4,6 +4,7 @@ import com.myperfectgame.Config;
 import org.newdawn.slick.Color;
 import org.newdawn.slick.Image;
 import org.newdawn.slick.SlickException;
+import org.newdawn.slick.SpriteSheet;
 
 public class IBlock extends AbstractBlock<Image> implements Block<Image> {
 
@@ -16,15 +17,16 @@ public class IBlock extends AbstractBlock<Image> implements Block<Image> {
                 { null, null, null, null, } };
 
         try {
-            //Image img = new Image(10, 10);
-            blocks[0][2] = new Image(10, 10);
-            blocks[1][2] = new Image(10, 10);
-            blocks[2][2] = new Image(10, 10);
-            blocks[3][2] = new Image(10, 10);
-                    //"resources/1BY4QUEST.PNG");
-            //img.setFilter(Image.FILTER_NEAREST);
+
+            SpriteSheet spriteSheet = new SpriteSheet( new Image("resources/1BY4QUEST.PNG"), 30, 30);
+            blocks[2][0] = spriteSheet.getSprite(0, 0);
+            blocks[2][1] = spriteSheet.getSprite(0, 1);
+            blocks[2][2] = spriteSheet.getSprite(0, 2);
+            blocks[2][3] = spriteSheet.getSprite(0, 3);
         }
-        catch(SlickException e) {}
+        catch(SlickException e) {
+            System.out.println(e.toString());
+        }
 
             //, Color.magenta
 
@@ -36,7 +38,7 @@ public class IBlock extends AbstractBlock<Image> implements Block<Image> {
 	public Color getColor() {
 		return Config.IBLOCKCOLOUR;
 	}
-	
+              /*
 	@Override
 	public Image[][] rotateClockWise() {
 		if(null != blocks[3][1]) {
@@ -52,5 +54,5 @@ public class IBlock extends AbstractBlock<Image> implements Block<Image> {
 		}
 		else return super.rotateCounterClockWise();
 	}
-
+                */
 }

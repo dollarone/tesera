@@ -33,6 +33,8 @@ public class Play extends BasicGameState {
     private int offsetX;
     private int offsetY;
 
+    private int pixelOffset;
+
     private int deltaCounter;
     private int inputDelta;
 
@@ -78,18 +80,19 @@ public class Play extends BasicGameState {
         if(upcomingBlocks.isEmpty()) {
             // generate new set of blocks
             upcomingBlocks.add(new IBlock());
-            /*
+
             upcomingBlocks.add(rand.nextInt(2), new LBlock());
             upcomingBlocks.add(rand.nextInt(3), new JBlock());
             upcomingBlocks.add(rand.nextInt(4), new OBlock());
             upcomingBlocks.add(rand.nextInt(5), new ZBlock());
             upcomingBlocks.add(rand.nextInt(6), new TBlock());
             upcomingBlocks.add(rand.nextInt(7), new SBlock());
+            /*
             for(Block foo : upcomingBlocks) {
                 System.out.println(foo.getClass() + ", " );
             }
             System.out.println("-------------" );
-            */
+              */
         }
 
         if(null == block) { //if new block needed
@@ -124,22 +127,22 @@ public class Play extends BasicGameState {
             }
             else if(input.isKeyDown(Input.KEY_DOWN) || input.isKeyDown(Input.KEY_S)) {
                 if(gameField.checkMoveBlock(block, offsetX, offsetY+1)) {
-                    gameField.moveBlock(block, offsetX, offsetY++);
-                    inputDelta = 50;
+                    offsetY++; //gameField.moveBlock(block, offsetX, offsetY++);
+                    inputDelta = 70;
                     holdingDown++;
                 }
             }
             else if(input.isKeyDown(Input.KEY_RIGHT) || input.isKeyDown(Input.KEY_D)) {
                 if(gameField.checkMoveBlock(block, offsetX+1, offsetY)) {
                     gameField.moveBlock(block, offsetX++, offsetY);
-                    inputDelta = 100;
+                    inputDelta = 120;
                     holdingDown=1;
                 }
             }
             else if(input.isKeyDown(Input.KEY_LEFT) || input.isKeyDown(Input.KEY_A)) {
                 if(gameField.checkMoveBlock(block, offsetX-1, offsetY)) {
                     gameField.moveBlock(block, offsetX--, offsetY);
-                    inputDelta = 100;
+                    inputDelta = 120;
                     holdingDown=1;
                 }
 
@@ -155,7 +158,7 @@ public class Play extends BasicGameState {
                 block.rotateClockWise();
                 if(gameField.checkMoveBlock(block, offsetX, offsetY)) {
                     gameField.moveBlock(block, offsetX, offsetY);
-                    inputDelta = 150;
+                    inputDelta = 170;
                     holdingDown=1;
                 }
                 else {
@@ -163,7 +166,7 @@ public class Play extends BasicGameState {
                     block.rotateCounterClockWise();
                     if(gameField.checkMoveBlock(block, offsetX, offsetY)) {
                         gameField.moveBlock(block, offsetX, offsetY);
-                        inputDelta = 150;
+                        inputDelta = 170;
                         holdingDown=1;
                     }
                     else {
@@ -176,7 +179,7 @@ public class Play extends BasicGameState {
                 block.rotateClockWise();
                 if(gameField.checkMoveBlock(block, offsetX, offsetY)) {
                     gameField.moveBlock(block, offsetX, offsetY);
-                    inputDelta = 150;
+                    inputDelta = 170;
                     holdingDown=1;
                 }
                 else {
@@ -188,7 +191,7 @@ public class Play extends BasicGameState {
                 block.rotateCounterClockWise();
                 if(gameField.checkMoveBlock(block, offsetX, offsetY)) {
                     gameField.moveBlock(block, offsetX, offsetY);
-                    inputDelta = 150;
+                    inputDelta = 170;
                     holdingDown=1;
                 }
                 else {
@@ -199,11 +202,31 @@ public class Play extends BasicGameState {
             }
         }
 
+        // wait one frame
+        try {
+            Thread.currentThread().sleep(ONE_FRAME);
+            frameCount = (frameCount+1) % FRAMES_PER_STEP;
+            // For example, NES Tetris operates at 60 frames per second. At level 0, a piece falls one step every 48 frames, and at level 19, a piece falls one step every 2 frames. Level increments either terminate at a certain point (Game Boy Tetris tops off at level 20)
+            pixelOffset = 30 * frameCount / FRAMES_PER_STEP;
+            System.out.println("frameCount: " + frameCount + " \tpixelOffset: " + pixelOffset + " \tdeltaCounter: " + deltaCounter + " \tdelta:" + delta + " \tinputDelta: " + inputDelta + " \tholdingDown: " + holdingDown);
+        }
+        catch(InterruptedException e) {}
+
+        if(clearedLines>0) {
+
+            gameField.moveDownNLines(21, clearedLines);
+        }
+
+        clearedLines = 0;
 
         // update as per speed (FRAMES_PER_STEP)
         if(frameCount == 0) {
             if(gameField.checkMoveBlock(block, offsetX, offsetY+1)) {
-                gameField.moveBlock(block, offsetX, offsetY++);
+                offsetY++;//gameField.moveBlock(block, offsetX, offsetY++);
+
+                pixelOffset = 0;
+
+
             }
             else {
                 gameField.glueBlock(block, offsetX, offsetY);
@@ -219,23 +242,9 @@ public class Play extends BasicGameState {
 
                 block = null;
             }
+
         }
 
-        // wait one frame
-        try {
-            Thread.currentThread().sleep(ONE_FRAME);
-            frameCount = (frameCount+1) % FRAMES_PER_STEP;
-            // For example, NES Tetris operates at 60 frames per second. At level 0, a piece falls one step every 48 frames, and at level 19, a piece falls one step every 2 frames. Level increments either terminate at a certain point (Game Boy Tetris tops off at level 20)
-        }
-        catch(InterruptedException e) {}
-
-        if(clearedLines>0) {
-
-            System.out.println("removing " + clearedLines);
-            System.out.println("bottomest removed: " + gameField.moveDownNLines(21, clearedLines));
-        }
-
-        clearedLines = 0;
 
     }
 
@@ -243,36 +252,39 @@ public class Play extends BasicGameState {
     public void render(GameContainer container, StateBasedGame sbg, Graphics g)
             throws SlickException {
 
-        renderDraw(container, sbg, g);
-    }
-
-    public void renderImages(GameContainer container, StateBasedGame sbg, Graphics g)
-            throws SlickException {
-
-        if(updateBlocks) {
+        //if(updateBlocks) {
             for(int i=0; i<gameField.getWidth(); i++) {
                 for(int j=0; j<gameField.getHeight(); j++) {
-                    g.setColor(Color.gray);
+
                     if(j>1) {
-                        g.drawRect(BLOCK_START_X + i*BLOCKSIZE, BLOCK_START_Y + j*BLOCKSIZE, BLOCKSIZE, BLOCKSIZE);
-                    }
-                    g.setColor(gameField.getBlock(i, j));
-                    if(j>1) {
-                        g.fillRect(BLOCK_START_X + 1 + i*BLOCKSIZE, BLOCK_START_Y + 1 + j*BLOCKSIZE, BLOCKSIZE -2, BLOCKSIZE -2);
+                        if(null == gameField.getBlock(i, j)) {
+                            //g.setColor(Color.gray);
+                            //g.drawRect(BLOCK_START_X - 1 + i*BLOCKSIZE, BLOCK_START_Y - 1 + j*BLOCKSIZE, BLOCKSIZE, BLOCKSIZE);
+                            g.setColor(Config.NOBLOCKCOLOUR);
+                            g.fillRect(BLOCK_START_X + 1 + i*BLOCKSIZE, BLOCK_START_Y + 1 + j*BLOCKSIZE, BLOCKSIZE -2, BLOCKSIZE -2);
+                        }
+                        else {
+                            g.drawImage(gameField.getBlock(i,j), (float)(BLOCK_START_X + (i*BLOCKSIZE)), (float)(BLOCK_START_Y + (j*BLOCKSIZE)));
+                        }
                     }
                 }
             }
-        }
+       // }
 
         if(null != block) {
             for(int i=0; i<4; i++) {
                 for(int j=0; j<4; j++) {
                     if(null != block.getBlock(i, j)) {
                         //blocks[i+offsetX][j+offsetY] = b.getColor();
-                        g.setColor(block.getColor());
+                        //g.setColor(block.getColor());
                         //if ((BLOCK_START_Y + 1 + (j+offsetY)*BLOCKSIZE)>2) {
                         if ((offsetY+j)>1) {
-                            g.fillRect(BLOCK_START_X + 1 + (i+offsetX)*BLOCKSIZE, BLOCK_START_Y + 1 + (j+offsetY)*BLOCKSIZE, BLOCKSIZE -2, BLOCKSIZE -2);
+                            //g.fillRect(BLOCK_START_X + 1 + (i+offsetX)*BLOCKSIZE, BLOCK_START_Y + 1 + (j+offsetY)*BLOCKSIZE, BLOCKSIZE -2, BLOCKSIZE -2);
+
+                            // comment out the following line for smooth animation:
+                            pixelOffset=30;
+
+                            g.drawImage(block.getBlock(i,j), (float)(BLOCK_START_X + (i+offsetX)*BLOCKSIZE), (float)(BLOCK_START_Y + pixelOffset - 30 + (j+offsetY)*BLOCKSIZE));
                         }
 
                     }
@@ -285,14 +297,15 @@ public class Play extends BasicGameState {
             for(int i=0; i<4; i++) {
                 for(int j=0; j<4; j++) {
                     if(null != upcomingBlocks.getFirst().getBlock(i, j)) {
-                        g.setColor(upcomingBlocks.getFirst().getColor());
-                        g.fillRect(BLOCK_START_X + 1 + i*BLOCKSIZE + 310, BLOCK_START_Y + 1 + (j+3)*BLOCKSIZE, BLOCKSIZE -2, BLOCKSIZE -2);
+                        //g.setColor(upcomingBlocks.getFirst().getColor());
+                        //g.fillRect(BLOCK_START_X + 1 + i*BLOCKSIZE + 310, BLOCK_START_Y + 1 + (j+3)*BLOCKSIZE, BLOCKSIZE -2, BLOCKSIZE -2);
+                        g.drawImage(upcomingBlocks.getFirst().getBlock(i,j), (float)(BLOCK_START_X + i*BLOCKSIZE + 310), (float)(BLOCK_START_Y + (j+3)*BLOCKSIZE));
 
                     }
                     else {
-                        g.setColor(Color.gray);
-                        g.drawRect(BLOCK_START_X + i*BLOCKSIZE + 310, BLOCK_START_Y + (j+3)*BLOCKSIZE, BLOCKSIZE, BLOCKSIZE);
-                        g.setColor(Color.white);
+                        //g.setColor(Color.gray);
+                        //g.drawRect(BLOCK_START_X + i*BLOCKSIZE + 310, BLOCK_START_Y  + (j+3)*BLOCKSIZE, BLOCKSIZE, BLOCKSIZE);
+                        g.setColor(Config.NOBLOCKCOLOUR);
                         g.fillRect(BLOCK_START_X + 1 + i*BLOCKSIZE + 310, BLOCK_START_Y + 1 + (j+3)*BLOCKSIZE, BLOCKSIZE -2, BLOCKSIZE -2);
                     }
                 }
@@ -303,76 +316,9 @@ public class Play extends BasicGameState {
         g.drawString("Total score:", 20, 100);
         g.drawString(totalScore + "", 50, 120);
 
-
+        //g.setDrawMode(Graphics.MODE_SCREEN);
     }
 
-    public void renderDraw(GameContainer container, StateBasedGame sbg, Graphics g)
-            throws SlickException {
-
-
-        if(updateBlocks) {
-            for(int i=0; i<gameField.getWidth(); i++) {
-                for(int j=0; j<gameField.getHeight(); j++) {
-                    g.setColor(Color.gray);
-                    if(j>1) {
-                        g.drawRect(BLOCK_START_X + i*BLOCKSIZE, BLOCK_START_Y + j*BLOCKSIZE, BLOCKSIZE, BLOCKSIZE);
-                    }
-                    g.setColor(gameField.getBlock(i, j));
-                    if(j>1) {
-                        g.fillRect(BLOCK_START_X + 1 + i*BLOCKSIZE, BLOCK_START_Y + 1 + j*BLOCKSIZE, BLOCKSIZE -2, BLOCKSIZE -2);
-                    }
-                }
-            }
-        }
-
-        if(null != block) {
-            for(int i=0; i<4; i++) {
-                for(int j=0; j<4; j++) {
-                    if(null != block.getBlock(i, j)) {
-                        //blocks[i+offsetX][j+offsetY] = b.getColor();
-                        g.setColor(block.getColor());
-                        //if ((BLOCK_START_Y + 1 + (j+offsetY)*BLOCKSIZE)>2) {
-                        if ((offsetY+j)>1) {
-                            g.fillRect(BLOCK_START_X + 1 + (i+offsetX)*BLOCKSIZE, BLOCK_START_Y + 1 + (j+offsetY)*BLOCKSIZE, BLOCKSIZE -2, BLOCKSIZE -2);
-                        }
-
-                    }
-                }
-            }
-        }
-
-        // draw upcoming block:
-        if(upcomingBlocks.isEmpty() == false) {
-            for(int i=0; i<4; i++) {
-                for(int j=0; j<4; j++) {
-                    if(null != upcomingBlocks.getFirst().getBlock(i, j)) {
-                        g.setColor(upcomingBlocks.getFirst().getColor());
-                        g.fillRect(BLOCK_START_X + 1 + i*BLOCKSIZE + 310, BLOCK_START_Y + 1 + (j+3)*BLOCKSIZE, BLOCKSIZE -2, BLOCKSIZE -2);
-
-                    }
-                    else {
-                        g.setColor(Color.gray);
-                        g.drawRect(BLOCK_START_X + i*BLOCKSIZE + 310, BLOCK_START_Y + (j+3)*BLOCKSIZE, BLOCKSIZE, BLOCKSIZE);
-                        g.setColor(Color.white);
-                        g.fillRect(BLOCK_START_X + 1 + i*BLOCKSIZE + 310, BLOCK_START_Y + 1 + (j+3)*BLOCKSIZE, BLOCKSIZE -2, BLOCKSIZE -2);
-                    }
-                }
-            }
-        }
-        g.drawString("Next:", 500, 100);
-        // draw score
-        g.drawString("Total score:", 20, 100);
-        g.drawString(totalScore + "", 50, 120);
-
-        // example on how to use image:
-        Image img = new Image("resources/1BY4QUEST.PNG");
-        img.setFilter(Image.FILTER_NEAREST);
-        g.drawImage(img, 5, 5);
-
-        // plan: in the init part, load images.
-        // first plan: try loading in real-time.each block is different, so create each block-part from the image as needed.
-
-    }
 
     private void gameOver(StateBasedGame sbg) {
         isDead = true;
@@ -388,7 +334,6 @@ public class Play extends BasicGameState {
         gameField = new GameField();
         rand = new Random(2);
         updateBlocks = true;
-
 
         holdingDown = 1;
         frameCount = 0;

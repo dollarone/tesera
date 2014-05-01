@@ -9,5 +9,5 @@ public interface Block<T> {
 	public T[][] getBlocks();
 	public Color getColor();
 	public T getBlock(int i, int j);
-	
+
 }

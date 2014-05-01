@@ -9,22 +9,22 @@ import java.util.Random;
 public class GameField {
 	private final int GAMEFIELDHEIGHT = 22;
 	private final int GAMEFIELDWIDTH = 10;
-	private Color[][] blocks;
+	private Image[][] blocks;
 
 	public GameField() {
-		blocks = new Color[GAMEFIELDWIDTH][GAMEFIELDHEIGHT];
+		blocks = new Image[GAMEFIELDWIDTH][GAMEFIELDHEIGHT];
 		for(int i=0; i<GAMEFIELDWIDTH; i++) {
 			for(int j=0; j<GAMEFIELDHEIGHT; j++) {
-				blocks[i][j] = Config.NOBLOCKCOLOUR;;
+				blocks[i][j] = null;
 			}
 		}
 	}
 
-	public Color getBlock(int width, int height) {
+	public Image getBlock(int width, int height) {
 		return blocks[width][height];
 	}
 
-	public Color[][] getBlocks() {
+	public Image[][] getBlocks() {
 		return blocks;
 	}
 	
@@ -36,7 +36,7 @@ public class GameField {
 		return GAMEFIELDWIDTH;
 	}
 
-	public void setBlock(int i, int j, Color col) {
+	public void setBlock(int i, int j, Image col) {
 		blocks[i][j] = col;
 		
 	}
@@ -44,12 +44,12 @@ public class GameField {
 	public Block addBlock() {
 		Random ran = new Random();
 		switch(ran.nextInt(7)) {
-		case 0: return new IBlock(); 
-		case 1: return new LBlock();
-		case 2: return new JBlock();
-		case 3: return new OBlock();
-		case 4: return new ZBlock();
-		case 5: return new TBlock();
+		    case 0: return new IBlock();
+		    case 1: return new LBlock();
+    		case 2: return new JBlock();
+	    	case 3: return new OBlock();
+		    case 4: return new ZBlock();
+		    case 5: return new TBlock();
 		}
 		return new SBlock();
 		
@@ -66,10 +66,9 @@ public class GameField {
 						return false;
 					}
 							
-					if(blocks[i+offsetX][j+offsetY] != Config.NOBLOCKCOLOUR) {
+					if(blocks[i+offsetX][j+offsetY] != null) {
 						return false;
 					}
-					//blocks[i+offsetX][j+offsetY] = b.getColor(); 
 				}
 			}
 		}
@@ -77,6 +76,7 @@ public class GameField {
 	}
 	
 	// this sucks. need to think harder how to deal with moving block VS gameField. Separate them, draw block separately until it merges.
+    @Deprecated
 	public void moveBlock(Block<Image> b, int offsetX, int offsetY) {
 		Image[][] newBlock = b.getBlocks();
 
@@ -85,7 +85,7 @@ public class GameField {
 				if(null != newBlock[i][j]) {
 					
 					if(j+offsetY-1 >= 0) {
-						blocks[i+offsetX][j+offsetY-1] = Config.NOBLOCKCOLOUR;
+						//blocks[i+offsetX][j+offsetY] = null; // -1
 					}
 					//blocks[i+offsetX][j+offsetY] = b.getColor(); 
 				}
@@ -93,7 +93,8 @@ public class GameField {
 		}
 	}
 
-	public boolean glueBlock(Block<Image> b, int offsetX, int offsetY) {
+
+    public boolean glueBlock(Block<Image> b, int offsetX, int offsetY) {
 		
 		Image [][] newBlock = b.getBlocks();
 		
@@ -105,11 +106,11 @@ public class GameField {
 						return false;
 					}
 							
-					if(blocks[i+offsetX][j+offsetY] != Config.NOBLOCKCOLOUR) {
+					if(blocks[i+offsetX][j+offsetY] != null) {
 						return false;
 					}
 					
-					blocks[i+offsetX][j+offsetY] = b.getColor(); 
+					blocks[i+offsetX][j+offsetY] = newBlock[i][j];
 				}
 			}
 		}

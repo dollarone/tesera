@@ -1,16 +1,31 @@
 package com.myperfectgame.blocks;
 
+import org.newdawn.slick.Image;
+
 public abstract class AbstractBlock<T> implements Block<T> {
 	
 	protected T[][] blocks; // = new boolean[4][4];
 	
 	@Override
 	public T[][] rotateClockWise() {
-		
+
 		T tmp;
 		int n=4;
-		
-		// vector rotation algorithm
+
+        for (int i=0; i<4; i++) {
+            for (int j=0; j<4; j++) {
+                tmp = blocks[i][j];
+                if(tmp instanceof Image) {
+                  //  ((Image) tmp).setCenterOfRotation(((Image) tmp).getWidth() / 2, ((Image) tmp).getHeight() / 2);
+
+                    ((Image) tmp).setRotation(((Image) tmp).getRotation() - 90);
+                    blocks[i][j] = tmp;
+                }
+
+            }
+        }
+
+        // vector rotation algorithm
 		for (int i=0; i<n/2; i++){
 			for (int j=i; j<n-i-1; j++){
 			
@@ -35,7 +50,19 @@ public abstract class AbstractBlock<T> implements Block<T> {
 
         T tmp;
 		int n=4;
-		
+        for (int i=0; i<4; i++) {
+            for (int j=0; j<4; j++) {
+                tmp = blocks[i][j];
+                if(tmp instanceof Image) {
+                   // ((Image) tmp).setCenterOfRotation(((Image) tmp).getWidth() / 2, ((Image) tmp).getHeight() / 2);
+
+                    ((Image) tmp).setRotation(((Image) tmp).getRotation() + 90);
+                    blocks[i][j] = tmp;
+                }
+
+            }
+        }
+
 		// vector rotation algorithm
 		for (int i=0; i<n/2; i++){
 			for (int j=i; j<n-i-1; j++){
