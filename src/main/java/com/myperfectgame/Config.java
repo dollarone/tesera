@@ -16,5 +16,6 @@ public final class Config {
 	public final static Color OBLOCKCOLOUR=Color.yellow;
 
     public static boolean useColours = false;
+    public static boolean newGame = true;
 
 }

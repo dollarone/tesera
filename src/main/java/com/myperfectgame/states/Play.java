@@ -73,6 +73,10 @@ public class Play extends BasicGameState {
     @Override
     public void update(GameContainer container, StateBasedGame sbg, int delta)
             throws SlickException {
+        if(Config.newGame) {
+            this.init(container, sbg);
+        }
+        Config.newGame = false;
 
         deltaCounter -= delta;
         inputDelta -= delta;
@@ -87,12 +91,6 @@ public class Play extends BasicGameState {
             upcomingBlocks.add(rand.nextInt(5), new ZBlock());
             upcomingBlocks.add(rand.nextInt(6), new TBlock());
             upcomingBlocks.add(rand.nextInt(7), new SBlock());
-            /*
-            for(Block foo : upcomingBlocks) {
-                System.out.println(foo.getClass() + ", " );
-            }
-            System.out.println("-------------" );
-              */
         }
 
         if(null == block) { //if new block needed
@@ -115,7 +113,7 @@ public class Play extends BasicGameState {
 
             if(input.isKeyDown(Input.KEY_PAUSE) || input.isKeyDown(Input.KEY_P)) {
                 inputDelta = 250;
-                sbg.enterState(com.myperfectgame.Game.pause);
+                sbg.enterState(com.myperfectgame.Game.menu);
             }
             else if(input.isKeyDown(Input.KEY_X)) {
                 FRAMES_PER_STEP = 5;
@@ -127,21 +125,21 @@ public class Play extends BasicGameState {
             }
             else if(input.isKeyDown(Input.KEY_DOWN) || input.isKeyDown(Input.KEY_S)) {
                 if(gameField.checkMoveBlock(block, offsetX, offsetY+1)) {
-                    offsetY++; //gameField.moveBlock(block, offsetX, offsetY++);
+                    offsetY++;
                     inputDelta = 70;
                     holdingDown++;
                 }
             }
             else if(input.isKeyDown(Input.KEY_RIGHT) || input.isKeyDown(Input.KEY_D)) {
                 if(gameField.checkMoveBlock(block, offsetX+1, offsetY)) {
-                    gameField.moveBlock(block, offsetX++, offsetY);
+                    offsetX++;
                     inputDelta = 120;
                     holdingDown=1;
                 }
             }
             else if(input.isKeyDown(Input.KEY_LEFT) || input.isKeyDown(Input.KEY_A)) {
                 if(gameField.checkMoveBlock(block, offsetX-1, offsetY)) {
-                    gameField.moveBlock(block, offsetX--, offsetY);
+                    offsetX--;
                     inputDelta = 120;
                     holdingDown=1;
                 }
@@ -149,7 +147,7 @@ public class Play extends BasicGameState {
             }
             else if(input.isKeyDown(Input.KEY_NEXT) || input.isKeyDown(Input.KEY_R)) {
                 while(gameField.checkMoveBlock(block, offsetX, offsetY+1)) {
-                    gameField.moveBlock(block, offsetX, offsetY++);
+                    offsetY++;
                     inputDelta = 250;
                     holdingDown++;
                 }
@@ -157,7 +155,6 @@ public class Play extends BasicGameState {
             else if(input.isKeyDown(Input.KEY_UP)) {
                 block.rotateClockWise();
                 if(gameField.checkMoveBlock(block, offsetX, offsetY)) {
-                    gameField.moveBlock(block, offsetX, offsetY);
                     inputDelta = 170;
                     holdingDown=1;
                 }
@@ -165,7 +162,6 @@ public class Play extends BasicGameState {
                     block.rotateCounterClockWise();
                     block.rotateCounterClockWise();
                     if(gameField.checkMoveBlock(block, offsetX, offsetY)) {
-                        gameField.moveBlock(block, offsetX, offsetY);
                         inputDelta = 170;
                         holdingDown=1;
                     }
@@ -178,7 +174,6 @@ public class Play extends BasicGameState {
             else if(input.isKeyDown(Input.KEY_E)) {
                 block.rotateClockWise();
                 if(gameField.checkMoveBlock(block, offsetX, offsetY)) {
-                    gameField.moveBlock(block, offsetX, offsetY);
                     inputDelta = 170;
                     holdingDown=1;
                 }
@@ -190,7 +185,6 @@ public class Play extends BasicGameState {
             else if(input.isKeyDown(Input.KEY_Q)) {
                 block.rotateCounterClockWise();
                 if(gameField.checkMoveBlock(block, offsetX, offsetY)) {
-                    gameField.moveBlock(block, offsetX, offsetY);
                     inputDelta = 170;
                     holdingDown=1;
                 }
@@ -334,6 +328,9 @@ public class Play extends BasicGameState {
         gameField = new GameField();
         rand = new Random(2);
         updateBlocks = true;
+        block = null;
+        offsetX = 0;
+        offsetY = 0;
 
         holdingDown = 1;
         frameCount = 0;
@@ -356,17 +353,4 @@ public class Play extends BasicGameState {
             isDead = false;
         }
     }
-            /*
-    public static void main(String[] args) {
-        try {
-            AppGameContainer app = new AppGameContainer(new Game());
-            app.setDisplayMode(RES_WIDTH, RES_HEIGHT, false);
-            app.start();
-        }
-        catch (SlickException e) {
-            e.printStackTrace();
-        }
-
-    }
-    */
 }

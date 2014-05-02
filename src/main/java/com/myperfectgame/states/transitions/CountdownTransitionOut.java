@@ -48,6 +48,7 @@ public class CountdownTransitionOut implements Transition
     // Throws - SlickException: Indicates a failure occured during the render
     public void postRender (StateBasedGame game, GameContainer container, Graphics g) {
         g.clear();
+        g.setColor(Color.gray);
         g.drawString("Resuming in " + countdown + " seconds",200, 300);
     }
 

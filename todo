@@ -1,12 +1,11 @@
 tesera todo:
-menu - sensible look. highlighted selection. enter: select
+menu - sensible look (buttons). enter: select
 high score screen - need to store stuff
 music (should start on new game)
 levels - speed-up
 background pic
 not updating w/o focus!
 help/controls screen
-remove moveBlock calls
 
 done
 actually remove lines.
@@ -16,4 +15,5 @@ game over screen
 BUG - moving under blocks removes them
 added and fixed smooth animation - then left it out
 removed gray lines in the grid
-
+remove moveBlock calls
+menu - selection done, with visual feedback

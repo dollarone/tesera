@@ -28,42 +28,16 @@ public class Game extends StateBasedGame{
     public Game(String gamename){
         super(gamename);
         this.addState(new Menu(menu));
-        this.addState(new NewGame(new_game));
         this.addState(new Play(play));
-        this.addState(new Pause(pause));
         this.addState(new GameOver(gameover));
-        /*
-        this.addState(new Menu(menu));
-        this.addState(new Play(play));
-        this.addState(new Newgame(new_game));
-        this.addState(new Loadgame(load_game));
-        this.addState(new Charselect(char_select));
-        this.addState(new Itemfound(item_found));
-        this.addState(new Monsterfight(monster_fight));
-        this.addState(new Inventory(inventory));
-        */
 
     }
-    /*
-     */
+
     public void initStatesList(GameContainer gc) throws SlickException{
         this.getState(menu).init(gc, this);
-        this.getState(new_game).init(gc, this);
         this.getState(play).init(gc, this);
-        this.getState(pause).init(gc, this);
         this.getState(gameover).init(gc, this);
-       // this.getState(load_game).init(gc, this);
 
-                /*
-        //broken states
-        this.getState(new_game).init(gc, this);
-        this.getState(item_found).init(gc, this);
-        this.getState(char_select).init(gc, this);
-        this.getState(monster_fight).init(gc, this);
-        this.getState(inventory).init(gc, this);
-        //end broken states
-        this.enterState(menu);
-        */
         this.enterState(menu);
     }
 

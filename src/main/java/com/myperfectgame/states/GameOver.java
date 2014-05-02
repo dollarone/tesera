@@ -27,11 +27,16 @@ public class GameOver extends BasicGameState{
 
     public void render(GameContainer gc, StateBasedGame sbg, Graphics g) throws SlickException{
         g.setBackground(Color.black);
-        g.drawString("Game over Philip",250,300);
+        g.drawString("Game over",250,300);
 
     }
 
     public void update(GameContainer container, StateBasedGame sbg, int delta) throws SlickException{
+        //if(something) {
+        //    record_stats;
+        // also display stats
+        // and have end music (or different endings?)
+        //}
         inputDelta -= delta;
         Input input = container.getInput();
 
@@ -39,11 +44,6 @@ public class GameOver extends BasicGameState{
             if(input.isKeyDown(Input.KEY_ENTER) | input.isKeyDown(Input.KEY_ESCAPE)) {
                 inputDelta = 250;
                 sbg.enterState(com.myperfectgame.Game.menu);
-
-            }
-            else if (input.isKeyDown(Input.KEY_F1)) {
-                inputDelta = 250;
-                sbg.enterState(com.myperfectgame.Game.play);
 
             }
         }

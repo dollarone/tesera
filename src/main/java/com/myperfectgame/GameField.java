@@ -74,25 +74,6 @@ public class GameField {
 		}
 		return true;
 	}
-	
-	// this sucks. need to think harder how to deal with moving block VS gameField. Separate them, draw block separately until it merges.
-    @Deprecated
-	public void moveBlock(Block<Image> b, int offsetX, int offsetY) {
-		Image[][] newBlock = b.getBlocks();
-
-		for(int i=0; i<newBlock.length; i++) {
-			for(int j=0; j<newBlock.length; j++) {
-				if(null != newBlock[i][j]) {
-					
-					if(j+offsetY-1 >= 0) {
-						//blocks[i+offsetX][j+offsetY] = null; // -1
-					}
-					//blocks[i+offsetX][j+offsetY] = b.getColor(); 
-				}
-			}
-		}
-	}
-
 
     public boolean glueBlock(Block<Image> b, int offsetX, int offsetY) {
 		
