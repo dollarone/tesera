@@ -42,10 +42,7 @@ public class Play extends BasicGameState {
     private int clearedLines;
     private int holdingDown;
 
-    // TODO : better stats
-    private int totalClearedLines;
-    private int totalBlocks;
-    private int totalScore;
+    private Stats stats;
 
     private LinkedList<Block<Image>> upcomingBlocks;
 
@@ -113,6 +110,7 @@ public class Play extends BasicGameState {
 
             if(input.isKeyDown(Input.KEY_PAUSE) || input.isKeyDown(Input.KEY_P)) {
                 inputDelta = 250;
+                stats.incPause();
                 sbg.enterState(com.myperfectgame.Game.menu);
             }
             else if(input.isKeyDown(Input.KEY_X)) {
@@ -128,6 +126,7 @@ public class Play extends BasicGameState {
                     offsetY++;
                     inputDelta = 70;
                     holdingDown++;
+                    stats.incDown();
                 }
             }
             else if(input.isKeyDown(Input.KEY_RIGHT) || input.isKeyDown(Input.KEY_D)) {
@@ -135,6 +134,7 @@ public class Play extends BasicGameState {
                     offsetX++;
                     inputDelta = 120;
                     holdingDown=1;
+                    stats.incRight();
                 }
             }
             else if(input.isKeyDown(Input.KEY_LEFT) || input.isKeyDown(Input.KEY_A)) {
@@ -142,6 +142,7 @@ public class Play extends BasicGameState {
                     offsetX--;
                     inputDelta = 120;
                     holdingDown=1;
+                    stats.incLeft();
                 }
 
             }
@@ -150,13 +151,16 @@ public class Play extends BasicGameState {
                     offsetY++;
                     inputDelta = 250;
                     holdingDown++;
+
                 }
+                stats.incDrop();
             }
             else if(input.isKeyDown(Input.KEY_UP)) {
                 block.rotateClockWise();
                 if(gameField.checkMoveBlock(block, offsetX, offsetY)) {
                     inputDelta = 170;
                     holdingDown=1;
+                    stats.incRotate();
                 }
                 else {
                     block.rotateCounterClockWise();
@@ -164,6 +168,7 @@ public class Play extends BasicGameState {
                     if(gameField.checkMoveBlock(block, offsetX, offsetY)) {
                         inputDelta = 170;
                         holdingDown=1;
+                        stats.incRotate();
                     }
                     else {
                         block.rotateClockWise();
@@ -176,6 +181,7 @@ public class Play extends BasicGameState {
                 if(gameField.checkMoveBlock(block, offsetX, offsetY)) {
                     inputDelta = 170;
                     holdingDown=1;
+                    stats.incRotate();
                 }
                 else {
                     block.rotateCounterClockWise();
@@ -187,6 +193,7 @@ public class Play extends BasicGameState {
                 if(gameField.checkMoveBlock(block, offsetX, offsetY)) {
                     inputDelta = 170;
                     holdingDown=1;
+                    stats.incRotate();
                 }
                 else {
                     block.rotateClockWise();
@@ -227,12 +234,12 @@ public class Play extends BasicGameState {
 
                 clearedLines = gameField.clearLines(offsetY);
 
-                totalScore += gameField.score(clearedLines);
-                totalScore += holdingDown;// count
+                stats.addScore(gameField.score(clearedLines));
+                stats.addScore(holdingDown);// count
                 holdingDown = 0;
 
-                totalClearedLines += clearedLines;
-                totalBlocks++;
+                stats.addClearedLines(clearedLines);
+                stats.incBlocks();
 
                 block = null;
             }
@@ -308,7 +315,7 @@ public class Play extends BasicGameState {
         g.drawString("Next:", 500, 100);
         // draw score
         g.drawString("Total score:", 20, 100);
-        g.drawString(totalScore + "", 50, 120);
+        g.drawString(stats.getScore() + "", 50, 120);
 
         //g.setDrawMode(Graphics.MODE_SCREEN);
     }
@@ -317,9 +324,10 @@ public class Play extends BasicGameState {
     private void gameOver(StateBasedGame sbg) {
         isDead = true;
         System.out.println("Game over");
-        System.out.println("Lines cleared: " + totalClearedLines);
-        System.out.println("Blocks placed: " + totalBlocks);
-        System.out.println("Score: " + totalScore);
+        System.out.println("Lines cleared: " + stats.getClearedLines());
+        System.out.println("Blocks placed: " + stats.getBlocks());
+        System.out.println("Score: " + stats.getScore());
+        System.out.println("Left " + stats.getLeft());
         sbg.enterState(com.myperfectgame.Game.gameover);
 
     }
@@ -338,10 +346,7 @@ public class Play extends BasicGameState {
         inputDelta = 0;
         upcomingBlocks = new LinkedList<Block<Image>>();
 
-        clearedLines = 0;
-        totalClearedLines = 0;
-        totalBlocks = 0;
-        totalScore = 0;
+        stats = new Stats();
 
     }
 
