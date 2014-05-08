@@ -86,15 +86,19 @@ public class Menu extends BasicGameState {
 
         if (inputDelta < 0) {
             if(input.isKeyDown(Input.KEY_PAUSE) || input.isKeyDown(Input.KEY_P)) {
-                inputDelta = 250;
-                sbg.enterState(com.myperfectgame.Game.play, new CountdownTransitionOut(), null);
+                if(false == Config.newGame) {
+                    inputDelta = 250;
+                    sbg.enterState(com.myperfectgame.Game.play, new CountdownTransitionOut(), null);
+                }
             }
             else if(input.isKeyDown(Input.KEY_UP)) {
+                inputDelta = 250;
                 switch(selected) {
                     case RESUMEGAME:
+                        inputDelta = 50;
                         break;
                     case NEWGAME:
-                        if(Config.newGame == false) {
+                        if(false == Config.newGame) {
                             selected = Selection.RESUMEGAME;
                         }
                         break;
@@ -105,10 +109,9 @@ public class Menu extends BasicGameState {
                         selected = Selection.HIGHSCORES;
                         break;
                 }
-                inputDelta = 250;
-
             }
             else if(input.isKeyDown(Input.KEY_DOWN)) {
+                inputDelta = 250;
                 switch(selected) {
                     case RESUMEGAME:
                         selected = Selection.NEWGAME;
@@ -120,13 +123,27 @@ public class Menu extends BasicGameState {
                         selected = Selection.QUIT;
                         break;
                     case QUIT:
+                        inputDelta = 50;
                         break;
                 }
-                inputDelta = 250;
             }
             else if(input.isKeyDown(Input.KEY_ENTER)) {
-                Config.newGame = true;
-                sbg.enterState(com.myperfectgame.Game.play, new CountdownTransitionOut(), null);
+                inputDelta = 250;
+                switch(selected) {
+                    case RESUMEGAME:
+                        sbg.enterState(com.myperfectgame.Game.play, new CountdownTransitionOut(), null);
+                        break;
+                    case NEWGAME:
+                        Config.newGame = true;
+                        sbg.enterState(com.myperfectgame.Game.play, new CountdownTransitionOut(), null);
+                        break;
+                    case HIGHSCORES:
+                        // TODO
+                        break;
+                    case QUIT:
+                        container.exit();
+                        break;
+                }
             }
         }
 

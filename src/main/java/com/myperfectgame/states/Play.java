@@ -11,6 +11,9 @@ import org.newdawn.slick.*;
 import org.newdawn.slick.state.BasicGameState;
 import org.newdawn.slick.state.StateBasedGame;
 
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.ObjectOutputStream;
 import java.util.LinkedList;
 import java.util.Random;
 
@@ -77,6 +80,7 @@ public class Play extends BasicGameState {
 
         deltaCounter -= delta;
         inputDelta -= delta;
+        stats.addPlayTime(delta);
 
         if(upcomingBlocks.isEmpty()) {
             // generate new set of blocks
@@ -316,6 +320,7 @@ public class Play extends BasicGameState {
         // draw score
         g.drawString("Total score:", 20, 100);
         g.drawString(stats.getScore() + "", 50, 120);
+        g.drawString(stats.getPlayTime() + "", 50, 150);
 
         //g.setDrawMode(Graphics.MODE_SCREEN);
     }
@@ -328,6 +333,25 @@ public class Play extends BasicGameState {
         System.out.println("Blocks placed: " + stats.getBlocks());
         System.out.println("Score: " + stats.getScore());
         System.out.println("Left " + stats.getLeft());
+
+        // compare highscores?
+        // or save
+        try
+        {
+            FileOutputStream fileOut = new FileOutputStream("1.ser");
+            ObjectOutputStream out = new ObjectOutputStream(fileOut);
+            out.writeObject(stats);
+            out.close();
+            fileOut.close();
+            System.out.printf("Serialized data is saved in 1.ser");
+        }
+        catch(IOException i)
+        {
+            i.printStackTrace();
+        }
+
+        resetGame();
+        Config.newGame = true;
         sbg.enterState(com.myperfectgame.Game.gameover);
 
     }

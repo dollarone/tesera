@@ -1,13 +1,14 @@
 tesera todo:
 menu - sensible look (buttons). enter: select
-high score screen - need to store stuff
+high score screen - need to store stuff - be able to drill down into details
 music (should start on new game)
 levels - speed-up
 background pic
 not updating w/o focus!
 help/controls screen
+different levels
 
-done
+done:
 actually remove lines.
 hide yellow rows
 realtime score screen

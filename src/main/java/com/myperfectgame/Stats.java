@@ -1,10 +1,14 @@
 package com.myperfectgame;
 
+import java.io.Serializable;
+
 /**
  * The class with all the STATS
  * Date: 07/05/14
  */
-public class Stats {
+public class Stats implements Serializable {
+
+    private static final long serialVersionUID = 7526372295622776147L;
 
     private int clearedLines;
     private int blocks;
@@ -18,7 +22,7 @@ public class Stats {
     private int drop;
 
     private int pauses;
-    private int playTime; // seconds?
+    private long playTime; // milliseconds
 
 
     public Stats() {
@@ -93,7 +97,7 @@ public class Stats {
         this.pauses++;
     }
 
-    public int getPlayTime() {
+    public long getPlayTime() {
         return playTime;
     }
 
