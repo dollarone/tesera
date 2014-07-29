@@ -1,6 +1,7 @@
 package com.myperfectgame;
 
 import java.io.Serializable;
+import java.util.Comparator;
 
 /**
  * The class with all the STATS
@@ -131,5 +132,12 @@ public class Stats implements Serializable {
         this.drop++;
         incKey();
     }
+
+    public static Comparator<Stats> COMPARE_BY_SCORE = new Comparator<Stats>() {
+        public int compare(Stats one, Stats other) {
+            return one.getScore() < other.getScore() ? 1 : one.getScore() > other.getScore() ? -1 : 0;
+        }
+    };
+
 
 }

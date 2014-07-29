@@ -6,6 +6,7 @@ package com.myperfectgame.states;
  */
 
 import com.myperfectgame.*;
+import com.myperfectgame.Game;
 import com.myperfectgame.blocks.*;
 import org.newdawn.slick.*;
 import org.newdawn.slick.state.BasicGameState;
@@ -320,7 +321,7 @@ public class Play extends BasicGameState {
         // draw score
         g.drawString("Total score:", 20, 100);
         g.drawString(stats.getScore() + "", 50, 120);
-        g.drawString(stats.getPlayTime() + "", 50, 150);
+        g.drawString(stats.getPlayTime()/1000 + "", 50, 150);
 
         //g.setDrawMode(Graphics.MODE_SCREEN);
     }
@@ -336,19 +337,12 @@ public class Play extends BasicGameState {
 
         // compare highscores?
         // or save
-        try
-        {
-            FileOutputStream fileOut = new FileOutputStream("1.ser");
-            ObjectOutputStream out = new ObjectOutputStream(fileOut);
-            out.writeObject(stats);
-            out.close();
-            fileOut.close();
-            System.out.printf("Serialized data is saved in 1.ser");
-        }
-        catch(IOException i)
-        {
-            i.printStackTrace();
-        }
+
+        // TODO: stats.setDate ( NOW );
+        // TODO: stats.setName()
+
+        ((Game)sbg).addHighScore(stats);
+        ((Game)sbg).saveHighScores();
 
         resetGame();
         Config.newGame = true;

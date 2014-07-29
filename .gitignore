@@ -3,3 +3,5 @@ lib/*
 *.class
 resources/back.x*
 tesera.iml
+1.ser
+.gitignore

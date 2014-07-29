@@ -9,7 +9,7 @@ import org.newdawn.slick.SpriteSheet;
 public class IBlock extends AbstractBlock<Image> implements Block<Image> {
 
 	public IBlock() {
-        //Image img; // = new Image(10,10); // empty image
+
         blocks = new Image[][] {
                 { null, null, null, null, },
                 { null, null, null, null, },
@@ -27,10 +27,6 @@ public class IBlock extends AbstractBlock<Image> implements Block<Image> {
         catch(SlickException e) {
             System.out.println(e.toString());
         }
-
-            //, Color.magenta
-
-
 
 	}
 

@@ -16,19 +16,26 @@ public class CountdownTransitionOut implements Transition
 {
     private int countdown;
     private float time;
+    private String prefix;
 
     private boolean complete;
 
     // Create a new mosaic transition
     public CountdownTransitionOut()
     {
-        this (3);
+        this(3);
+    }
+
+    public CountdownTransitionOut(int countdown)
+    {
+        this(countdown, "Resuming");
     }
 
     // Create a new countdown transition
     // countdown - The number of seconds it takes for the transition to finish
-    public CountdownTransitionOut(int countdown)
+    public CountdownTransitionOut(int countdown, String prefix)
     {
+        this.prefix = prefix;
         complete = false;
         this.countdown = countdown;
         time = 0f;
@@ -49,7 +56,7 @@ public class CountdownTransitionOut implements Transition
     public void postRender (StateBasedGame game, GameContainer container, Graphics g) {
         g.clear();
         g.setColor(Color.gray);
-        g.drawString("Resuming in " + countdown + " seconds",200, 300);
+        g.drawString(prefix + " in " + countdown + " seconds",200, 300);
     }
 
     // Update the transition. Cause what ever happens in the transition to happen

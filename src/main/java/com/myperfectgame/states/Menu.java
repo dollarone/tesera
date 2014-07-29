@@ -20,7 +20,7 @@ public class Menu extends BasicGameState {
     private UnicodeFont gameFont;
     private Image image;
 
-    private enum Selection { NEWGAME, RESUMEGAME, HIGHSCORES, QUIT };
+    private enum Selection { NEWGAME, RESUMEGAME, HIGHSCORES, HELP, QUIT };
     private Selection selected;
 
 
@@ -56,7 +56,8 @@ public class Menu extends BasicGameState {
         }
         drawSelection(Selection.NEWGAME, g, "New Game",250,300);
         drawSelection(Selection.HIGHSCORES, g, "High Scores",250,400);
-        drawSelection(Selection.QUIT, g, "Quit",250,500);
+        drawSelection(Selection.HELP, g, "Help",250,500);
+        drawSelection(Selection.QUIT, g, "Quit",250,600);
 
         /*
          * MENU:
@@ -105,8 +106,11 @@ public class Menu extends BasicGameState {
                     case HIGHSCORES:
                         selected = Selection.NEWGAME;
                         break;
-                    case QUIT:
+                    case HELP:
                         selected = Selection.HIGHSCORES;
+                        break;
+                    case QUIT:
+                        selected = Selection.HELP;
                         break;
                 }
             }
@@ -120,6 +124,9 @@ public class Menu extends BasicGameState {
                         selected = Selection.HIGHSCORES;
                         break;
                     case HIGHSCORES:
+                        selected = Selection.HELP;
+                        break;
+                    case HELP:
                         selected = Selection.QUIT;
                         break;
                     case QUIT:
@@ -135,10 +142,13 @@ public class Menu extends BasicGameState {
                         break;
                     case NEWGAME:
                         Config.newGame = true;
-                        sbg.enterState(com.myperfectgame.Game.play, new CountdownTransitionOut(), null);
+                        sbg.enterState(com.myperfectgame.Game.play, new CountdownTransitionOut(3, "Starting"), null);
                         break;
                     case HIGHSCORES:
-                        // TODO
+                        sbg.enterState(com.myperfectgame.Game.highscores, null, null);
+                        break;
+                    case HELP:
+                        sbg.enterState(com.myperfectgame.Game.help, null, null);
                         break;
                     case QUIT:
                         container.exit();
