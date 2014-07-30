@@ -33,19 +33,10 @@ public class Help extends BasicGameState{
     public void render(GameContainer gc, StateBasedGame sbg, Graphics g) throws SlickException{
         g.setBackground(Color.black);
         g.drawString("Help",250,180);
+        g.drawString("Fill each row completely with blocks in order to clear it",50,200);
+        g.drawString("You get more points for clearing more rows at the same time",50,220);
 
-        List<Stats> highScores = ((Game)sbg).getHighScores();
-        Collections.sort(highScores, Stats.COMPARE_BY_SCORE);
-
-        int i = 1;
-        int max = 10;
-
-        for(Stats stat : highScores) {
-            g.drawString("Score:",250,200+(i*20));
-            g.drawString(stat.getScore() + "",320,200+(i*20));
-            i++;
-            if(max==i) break;
-        }
+        g.drawString("Controls: arrows, Q, W and up to rotate, P to pause",100,280);
 
     }
 
