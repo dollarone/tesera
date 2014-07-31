@@ -321,7 +321,14 @@ public class Play extends BasicGameState {
         // draw score
         g.drawString("Total score:", 20, 100);
         g.drawString(stats.getScore() + "", 50, 120);
-        g.drawString(stats.getPlayTime()/1000 + "", 50, 150);
+        g.drawString("Time:", 20, 150);
+        g.drawString(stats.getPlayTime()/1000 + "", 70, 170);
+        g.drawString("Lines cleared:", 20, 200);
+        g.drawString(stats.getClearedLines() + "", 70, 220);
+        g.drawString("Blocks placed:", 20, 250);
+        g.drawString(stats.getBlocks() + "", 70, 270);
+        g.drawString("Left:", 20, 300);
+        g.drawString(stats.getLeft() + "", 70, 320);
 
         //g.setDrawMode(Graphics.MODE_SCREEN);
     }
