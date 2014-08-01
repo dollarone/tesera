@@ -16,11 +16,11 @@ public class JBlock extends AbstractBlock<Image> implements Block<Image> {
                 { null, null, null, null, } };
 
         try {
-            SpriteSheet spriteSheet = new SpriteSheet( new Image("resources/1by1blue.png"), 30, 30);
-            blocks[0][2] = spriteSheet.getSprite(0, 0);
-            blocks[1][2] = spriteSheet.getSprite(0, 0);
-            blocks[2][2] = spriteSheet.getSprite(0, 0);
-            blocks[2][1] = spriteSheet.getSprite(0, 0);
+            SpriteSheet spriteSheet = new SpriteSheet( new Image("resources/jblock.png"), 30, 30);
+            blocks[0][2] = spriteSheet.getSprite(1, 0);
+            blocks[1][2] = spriteSheet.getSprite(1, 1);
+            blocks[2][2] = spriteSheet.getSprite(1, 2);
+            blocks[2][1] = spriteSheet.getSprite(0, 2);
         }
         catch(SlickException e) {}
 
