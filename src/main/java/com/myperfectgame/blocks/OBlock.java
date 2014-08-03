@@ -17,11 +17,11 @@ public class OBlock extends AbstractBlock<Image> implements Block<Image> {
                 { null, null, null, null, } };
 
         try {
-            SpriteSheet spriteSheet = new SpriteSheet( new Image("resources/1by1yellow.png"), 30, 30);
+            SpriteSheet spriteSheet = new SpriteSheet( new Image("resources/oblock.png"), 30, 30);
             blocks[1][1] = spriteSheet.getSprite(0, 0);
-            blocks[2][1] = spriteSheet.getSprite(0, 0);
-            blocks[1][2] = spriteSheet.getSprite(0, 0);
-            blocks[2][2] = spriteSheet.getSprite(0, 0);
+            blocks[2][1] = spriteSheet.getSprite(0, 1);
+            blocks[1][2] = spriteSheet.getSprite(1, 0);
+            blocks[2][2] = spriteSheet.getSprite(1, 1);
         }
         catch(SlickException e) {}
 	}

@@ -17,11 +17,11 @@ public class LBlock extends AbstractBlock<Image> implements Block<Image> {
                 { null, null, null, null, } };
 
         try {
-            SpriteSheet spriteSheet = new SpriteSheet( new Image("resources/1by1orange.png"), 30, 30);
+            SpriteSheet spriteSheet = new SpriteSheet( new Image("resources/lblock.png"), 30, 30);
             blocks[0][1] = spriteSheet.getSprite(0, 0);
-            blocks[1][1] = spriteSheet.getSprite(0, 0);
-            blocks[2][1] = spriteSheet.getSprite(0, 0);
-            blocks[2][2] = spriteSheet.getSprite(0, 0);
+            blocks[1][1] = spriteSheet.getSprite(1, 0);
+            blocks[2][1] = spriteSheet.getSprite(2, 0);
+            blocks[0][2] = spriteSheet.getSprite(2, 1);
         }
         catch(SlickException e) {}
 	}

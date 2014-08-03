@@ -18,11 +18,11 @@ public class IBlock extends AbstractBlock<Image> implements Block<Image> {
 
         try {
 
-            SpriteSheet spriteSheet = new SpriteSheet( new Image("resources/1BY4QUEST.PNG"), 30, 30);
-            blocks[2][0] = spriteSheet.getSprite(0, 0);
-            blocks[2][1] = spriteSheet.getSprite(0, 1);
-            blocks[2][2] = spriteSheet.getSprite(0, 2);
-            blocks[2][3] = spriteSheet.getSprite(0, 3);
+            SpriteSheet spriteSheet = new SpriteSheet( new Image("resources/iblock.png"), 30, 30);
+            blocks[0][1] = spriteSheet.getSprite(0, 0);
+            blocks[1][1] = spriteSheet.getSprite(1, 0);
+            blocks[2][1] = spriteSheet.getSprite(2, 0);
+            blocks[3][1] = spriteSheet.getSprite(3, 0);
         }
         catch(SlickException e) {
             System.out.println(e.toString());
