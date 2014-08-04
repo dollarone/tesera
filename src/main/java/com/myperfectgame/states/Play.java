@@ -238,6 +238,14 @@ public class Play extends BasicGameState {
                 gameField.glueBlock(block, offsetX, offsetY);
 
                 clearedLines = gameField.clearLines(offsetY);
+                switch(clearedLines) {
+                    case 0: break;
+                    case 1: stats.incSingles(); break;
+                    case 2: stats.incDoubles(); break;
+                    case 3: stats.incTriples(); break;
+                    case 4: stats.incTetrises(); break;
+                    default: break;
+                }
 
                 stats.addScore(gameField.score(clearedLines));
                 stats.addScore(holdingDown);// count
@@ -327,9 +335,14 @@ public class Play extends BasicGameState {
         g.drawString(stats.getClearedLines() + "", 70, 220);
         g.drawString("Blocks placed:", 20, 250);
         g.drawString(stats.getBlocks() + "", 70, 270);
-        g.drawString("Left:", 20, 300);
-        g.drawString(stats.getLeft() + "", 70, 320);
-
+        g.drawString("Singles:", 20, 300);
+        g.drawString(stats.getSingles() + "", 70, 320);
+        g.drawString("Doubles:", 20, 350);
+        g.drawString(stats.getDoubles() + "", 70, 370);
+        g.drawString("Triples:", 20, 400);
+        g.drawString(stats.getTriples() + "", 70, 420);
+        g.drawString("Tetrises:", 20, 450);
+        g.drawString(stats.getTetrises() + "", 70, 470);
         //g.setDrawMode(Graphics.MODE_SCREEN);
     }
 

@@ -12,6 +12,11 @@ public class Stats implements Serializable {
     private static final long serialVersionUID = 7526372295622776147L;
 
     private int clearedLines;
+    private int singles;
+    private int doubles;
+    private int triples;
+    private int tetrises;
+
     private int blocks;
     private int score;
 
@@ -132,6 +137,40 @@ public class Stats implements Serializable {
         this.drop++;
         incKey();
     }
+
+    public int getSingles() {
+        return singles;
+    }
+
+    public void incSingles() {
+        this.singles++;
+    }
+
+    public int getDoubles() {
+        return doubles;
+    }
+
+    public void incDoubles() {
+        this.doubles++;
+
+    }
+
+    public int getTriples() {
+        return triples;
+    }
+
+    public void incTriples() {
+        this.triples++;
+    }
+
+    public int getTetrises() {
+        return tetrises;
+    }
+
+    public void incTetrises() {
+        this.tetrises++;
+    }
+
 
     public static Comparator<Stats> COMPARE_BY_SCORE = new Comparator<Stats>() {
         public int compare(Stats one, Stats other) {
