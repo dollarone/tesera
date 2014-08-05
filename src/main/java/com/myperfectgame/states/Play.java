@@ -44,7 +44,9 @@ public class Play extends BasicGameState {
 
     private int frameCount;
     private int clearedLines;
+
     private int holdingDown;
+
 
     private Stats stats;
 
@@ -108,6 +110,15 @@ public class Play extends BasicGameState {
 
         }
 
+        try {
+            Thread.currentThread().sleep(ONE_FRAME);
+            frameCount = (frameCount+1) % FRAMES_PER_STEP;
+            // For example, NES Tetris operates at 60 frames per second. At level 0, a piece falls one step every 48 frames, and at level 19, a piece falls one step every 2 frames. Level increments either terminate at a certain point (Game Boy Tetris tops off at level 20)
+            pixelOffset = 30 * frameCount / FRAMES_PER_STEP;
+            //System.out.println("frameCount: " + frameCount + " \tpixelOffset: " + pixelOffset + " \tdeltaCounter: " + deltaCounter + " \tdelta:" + delta + " \tinputDelta: " + inputDelta + " \tholdingDown: " + holdingDown);
+        }
+        catch(InterruptedException e) {}
+
         // only allow moves every so often
         if(inputDelta < 0) {
             Input input = container.getInput();
@@ -138,7 +149,7 @@ public class Play extends BasicGameState {
                 if(gameField.checkMoveBlock(block, offsetX+1, offsetY)) {
                     offsetX++;
                     inputDelta = 120;
-                    holdingDown=1;
+                    //holdingDown=0;
                     stats.incRight();
                 }
             }
@@ -146,7 +157,7 @@ public class Play extends BasicGameState {
                 if(gameField.checkMoveBlock(block, offsetX-1, offsetY)) {
                     offsetX--;
                     inputDelta = 120;
-                    holdingDown=1;
+                    //holdingDown=0;
                     stats.incLeft();
                 }
 
@@ -164,7 +175,7 @@ public class Play extends BasicGameState {
                 block.rotateClockWise();
                 if(gameField.checkMoveBlock(block, offsetX, offsetY)) {
                     inputDelta = 170;
-                    holdingDown=1;
+                    //holdingDown=1;
                     stats.incRotate();
                 }
                 else {
@@ -172,12 +183,12 @@ public class Play extends BasicGameState {
                     block.rotateCounterClockWise();
                     if(gameField.checkMoveBlock(block, offsetX, offsetY)) {
                         inputDelta = 170;
-                        holdingDown=1;
+                        //holdingDown=1;
                         stats.incRotate();
                     }
                     else {
                         block.rotateClockWise();
-                        holdingDown=1;
+                        //holdingDown=1;
                     }
                 }
             }
@@ -185,38 +196,30 @@ public class Play extends BasicGameState {
                 block.rotateClockWise();
                 if(gameField.checkMoveBlock(block, offsetX, offsetY)) {
                     inputDelta = 170;
-                    holdingDown=1;
+                    //holdingDown=1;
                     stats.incRotate();
                 }
                 else {
                     block.rotateCounterClockWise();
-                    holdingDown=1;
+                    //holdingDown=1;
                 }
             }
             else if(input.isKeyDown(Input.KEY_Q)) {
                 block.rotateCounterClockWise();
                 if(gameField.checkMoveBlock(block, offsetX, offsetY)) {
                     inputDelta = 170;
-                    holdingDown=1;
+                    //holdingDown=1;
                     stats.incRotate();
                 }
                 else {
                     block.rotateClockWise();
-                    holdingDown=1;
+                    //holdingDown=1;
                 }
 
             }
         }
 
         // wait one frame
-        try {
-            Thread.currentThread().sleep(ONE_FRAME);
-            frameCount = (frameCount+1) % FRAMES_PER_STEP;
-            // For example, NES Tetris operates at 60 frames per second. At level 0, a piece falls one step every 48 frames, and at level 19, a piece falls one step every 2 frames. Level increments either terminate at a certain point (Game Boy Tetris tops off at level 20)
-            pixelOffset = 30 * frameCount / FRAMES_PER_STEP;
-            System.out.println("frameCount: " + frameCount + " \tpixelOffset: " + pixelOffset + " \tdeltaCounter: " + deltaCounter + " \tdelta:" + delta + " \tinputDelta: " + inputDelta + " \tholdingDown: " + holdingDown);
-        }
-        catch(InterruptedException e) {}
 
         if(clearedLines>0) {
 
@@ -328,7 +331,7 @@ public class Play extends BasicGameState {
         g.drawString("Next:", 500, 100);
         // draw score
         g.drawString("Total score:", 20, 100);
-        g.drawString(stats.getScore() + "", 50, 120);
+        g.drawString(stats.getScore() + "", 70, 120);
         g.drawString("Time:", 20, 150);
         g.drawString(stats.getPlayTime()/1000 + "", 70, 170);
         g.drawString("Lines cleared:", 20, 200);
@@ -378,7 +381,7 @@ public class Play extends BasicGameState {
         offsetX = 0;
         offsetY = 0;
 
-        holdingDown = 1;
+        holdingDown = 0;
         frameCount = 0;
         deltaCounter = 500;
         inputDelta = 0;

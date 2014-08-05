@@ -22,6 +22,8 @@ public class Menu extends BasicGameState {
 
     private enum Selection { NEWGAME, RESUMEGAME, HIGHSCORES, HELP, QUIT };
     private Selection selected;
+    private final static int ONE_FRAME = 16; // 1000/60 ~= 16
+    private  static int FRAMES_PER_STEP = 48;//48;
 
 
     public Menu(int state){
@@ -84,6 +86,11 @@ public class Menu extends BasicGameState {
     public void update(GameContainer container, StateBasedGame sbg, int delta) throws SlickException{
         inputDelta -= delta;
         Input input = container.getInput();
+
+        try {
+            Thread.currentThread().sleep(ONE_FRAME);
+        }
+        catch(InterruptedException e) {}
 
         if (inputDelta < 0) {
             if(input.isKeyDown(Input.KEY_PAUSE) || input.isKeyDown(Input.KEY_P)) {

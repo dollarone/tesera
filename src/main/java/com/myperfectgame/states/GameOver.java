@@ -29,6 +29,8 @@ public class GameOver extends BasicGameState{
         g.setBackground(Color.black);
         g.drawString("Game over",250,300);
 
+        // TODO: here are your stats
+
     }
 
     public void update(GameContainer container, StateBasedGame sbg, int delta) throws SlickException{
