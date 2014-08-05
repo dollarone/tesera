@@ -154,10 +154,10 @@ public class GameField {
     public int score(int clearedLines) {
 		
 		switch(clearedLines) {
-		case 1: return 100;
-		case 2: return 300;
-		case 3: return 500;
-		case 4: return 800;
+		case 1: return 40;
+		case 2: return 100;
+		case 3: return 300;
+		case 4: return 1200;
 		}
 		return 0;
 	}
