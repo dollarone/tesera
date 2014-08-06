@@ -30,6 +30,7 @@ public class Game extends StateBasedGame{
     private final static int RES_HEIGHT = 800;
 
     private static List<Stats> highScores;
+    private static Stats currentStats;
 
     public Game(String gamename){
         super(gamename);
@@ -41,6 +42,7 @@ public class Game extends StateBasedGame{
         this.enterState(menu);
 
         loadHighScores();
+        resetCurrentStats();
     }
 
     public void initStatesList(GameContainer gc) throws SlickException{
@@ -74,6 +76,14 @@ public class Game extends StateBasedGame{
 
     public static List<Stats> getHighScores() {
         return highScores;
+    }
+
+    public void resetCurrentStats() {
+        currentStats = new Stats();
+    }
+
+    public Stats getCurrentStats() {
+        return currentStats;
     }
 
     private void loadHighScores() {
