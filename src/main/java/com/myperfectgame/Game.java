@@ -86,6 +86,11 @@ public class Game extends StateBasedGame{
         return currentStats;
     }
 
+    public void setCurrentStats(Stats stats) {
+        currentStats = stats;
+    }
+
+
     private void loadHighScores() {
         highScores = new Vector<Stats>();
 

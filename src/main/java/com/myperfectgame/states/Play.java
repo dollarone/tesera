@@ -12,9 +12,6 @@ import org.newdawn.slick.*;
 import org.newdawn.slick.state.BasicGameState;
 import org.newdawn.slick.state.StateBasedGame;
 
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.io.ObjectOutputStream;
 import java.util.LinkedList;
 import java.util.Random;
 
@@ -47,13 +44,12 @@ public class Play extends BasicGameState {
 
     private int holdingDown;
 
-
-    private Stats stats;
-
     private LinkedList<Block<Image>> upcomingBlocks;
 
     private boolean updateBlocks;
     private boolean isDead = false;
+
+    private Stats stats;
 
     public Play(int state){
         //super("SimpleTest");
@@ -67,8 +63,7 @@ public class Play extends BasicGameState {
 
     @Override
     public void init(GameContainer container, StateBasedGame sbg) throws SlickException {
-        resetGame();
-
+        resetGame(sbg);
     }
 
 
@@ -366,14 +361,15 @@ public class Play extends BasicGameState {
 
         ((Game)sbg).addHighScore(stats);
         ((Game)sbg).saveHighScores();
+        ((Game)sbg).setCurrentStats(stats);
 
-        resetGame();
+//        resetGame(sbg);
         Config.newGame = true;
         sbg.enterState(com.myperfectgame.Game.gameover);
 
     }
 
-    private void resetGame() {
+    private void resetGame(StateBasedGame sbg) {
         gameField = new GameField();
         rand = new Random(2);
         updateBlocks = true;
@@ -387,7 +383,8 @@ public class Play extends BasicGameState {
         inputDelta = 0;
         upcomingBlocks = new LinkedList<Block<Image>>();
 
-        stats = new Stats();
+        ((Game)sbg).resetCurrentStats();
+        stats = ((Game)sbg).getCurrentStats();
 
     }
 
@@ -395,7 +392,7 @@ public class Play extends BasicGameState {
     public void enter(GameContainer container, StateBasedGame game) throws SlickException {
         super.enter(container, game);
         if (isDead) {
-            resetGame();
+            resetGame(game);
             isDead = false;
         }
     }
