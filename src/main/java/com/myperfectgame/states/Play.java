@@ -360,8 +360,6 @@ public class Play extends BasicGameState {
         // TODO: stats.setName()
 
         ((Game)sbg).addHighScore(stats);
-        ((Game)sbg).saveHighScores();
-        ((Game)sbg).setCurrentStats(stats);
 
 //        resetGame(sbg);
         Config.newGame = true;
@@ -383,8 +381,8 @@ public class Play extends BasicGameState {
         inputDelta = 0;
         upcomingBlocks = new LinkedList<Block<Image>>();
 
-        ((Game)sbg).resetCurrentStats();
-        stats = ((Game)sbg).getCurrentStats();
+        //((Game)sbg).resetCurrentStats();
+        stats = new Stats(); //((Game)sbg).getCurrentStats();
 
     }
 

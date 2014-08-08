@@ -42,7 +42,7 @@ public class Game extends StateBasedGame{
         this.enterState(menu);
 
         loadHighScores();
-        resetCurrentStats();
+        //resetCurrentStats();
     }
 
     public void initStatesList(GameContainer gc) throws SlickException{
@@ -78,18 +78,9 @@ public class Game extends StateBasedGame{
         return highScores;
     }
 
-    public void resetCurrentStats() {
-        currentStats = new Stats();
-    }
-
     public Stats getCurrentStats() {
-        return currentStats;
+        return highScores.get(highScores.size()-1);
     }
-
-    public void setCurrentStats(Stats stats) {
-        currentStats = stats;
-    }
-
 
     private void loadHighScores() {
         highScores = new Vector<Stats>();
@@ -150,6 +141,7 @@ public class Game extends StateBasedGame{
 
     public void addHighScore(Stats stats) {
         highScores.add(stats);
+        saveHighScores();
 
     }
 }
