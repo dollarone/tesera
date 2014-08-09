@@ -49,6 +49,8 @@ public class Menu extends BasicGameState {
 
     public void render(GameContainer gc, StateBasedGame sbg, Graphics g) throws SlickException{
         g.drawImage(image, 0, 0);
+        g.setColor(Color.black);
+        g.fillRect(0,0,100,50);
         g.setBackground(Color.black);
         //g.drawString("Menu", 280, 245);
         //g.setFont(gameFont);                  // not working

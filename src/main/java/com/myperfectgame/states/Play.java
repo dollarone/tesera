@@ -353,7 +353,7 @@ public class Play extends BasicGameState {
         System.out.println("Score: " + stats.getScore());
         System.out.println("Left " + stats.getLeft());
 
-        // compare highscores?
+        // compare highscores?  yeah, let's find out how you did!
         // or save
 
         // TODO: stats.setDate ( NOW );
@@ -361,8 +361,9 @@ public class Play extends BasicGameState {
 
         ((Game)sbg).addHighScore(stats);
 
-//        resetGame(sbg);
+        //resetGame(sbg);
         Config.newGame = true;
+        isDead = true;
         sbg.enterState(com.myperfectgame.Game.gameover);
 
     }

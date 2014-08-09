@@ -12,6 +12,7 @@ import org.newdawn.slick.SlickException;
 import org.newdawn.slick.state.StateBasedGame;
 
 import java.io.*;
+import java.util.Collections;
 import java.util.List;
 import java.util.Vector;
 
@@ -30,7 +31,6 @@ public class Game extends StateBasedGame{
     private final static int RES_HEIGHT = 800;
 
     private static List<Stats> highScores;
-    private static Stats currentStats;
 
     public Game(String gamename){
         super(gamename);
@@ -142,6 +142,25 @@ public class Game extends StateBasedGame{
     public void addHighScore(Stats stats) {
         highScores.add(stats);
         saveHighScores();
+    }
 
+    public int findPosition(Stats stats) {
+
+        int currentScore = stats.getScore();
+
+        int i=0;
+        for(Stats stat : getSortedHighScores()) {
+            i++;
+            if(stat.getScore() == currentScore) return i;
+        }
+
+        return 0;
+
+    }
+
+    public List<Stats> getSortedHighScores() {
+        List<Stats> highScores = getHighScores();
+        Collections.sort(highScores, Stats.COMPARE_BY_SCORE);
+        return highScores;
     }
 }

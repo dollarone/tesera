@@ -36,13 +36,10 @@ public class HighScores extends BasicGameState{
         g.setBackground(Color.black);
         g.drawString("High Scores",250,180);
 
-        List<Stats> highScores = ((Game)sbg).getHighScores();
-        Collections.sort(highScores, Stats.COMPARE_BY_SCORE);
-
         int i = 1;
         int max = 10;
 
-        for(Stats stat : highScores) {
+        for(Stats stat : ((Game)sbg).getSortedHighScores()) {
             g.drawString("Score:",250,200+(i*20));
             g.drawString(stat.getScore() + "",320,200+(i*20));
             i++;

@@ -50,6 +50,10 @@ public class GameOver extends BasicGameState{
         g.drawString("Tetrises:", 220, 450);
         g.drawString(stats.getTetrises() + "", 270, 470);
 
+        g.drawString("Your rank:", 220, 550);
+        g.drawString("" + ((Game)sbg).findPosition(stats) + "", 270, 570);
+
+
     }
 
     public void update(GameContainer container, StateBasedGame sbg, int delta) throws SlickException{
