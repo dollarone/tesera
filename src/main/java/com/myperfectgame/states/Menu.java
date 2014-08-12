@@ -22,7 +22,7 @@ public class Menu extends BasicGameState {
 
     private enum Selection { NEWGAME, RESUMEGAME, HIGHSCORES, HELP, QUIT };
     private Selection selected;
-    private final static int ONE_FRAME = 16; // 1000/60 ~= 16
+    private final static int ONE_FRAME = 5; // 1000/60 ~= 16
     private  static int FRAMES_PER_STEP = 48;//48;
 
 
@@ -55,7 +55,7 @@ public class Menu extends BasicGameState {
         //g.drawString("Menu", 280, 245);
         //g.setFont(gameFont);                  // not working
 
-        if(Config.newGame == false) {
+        if(false == Config.newGame) {
             drawSelection(Selection.RESUMEGAME, g, "Resume Game", 250f, 220f);
         }
         drawSelection(Selection.NEWGAME, g, "New Game",250,300);
