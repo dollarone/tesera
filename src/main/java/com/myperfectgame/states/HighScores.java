@@ -40,6 +40,7 @@ public class HighScores extends BasicGameState{
         int max = 10;
 
         for(Stats stat : ((Game)sbg).getSortedHighScores()) {
+            g.drawString("" + i,230,200+(i*20));
             g.drawString("Score:",250,200+(i*20));
             g.drawString(stat.getScore() + "",320,200+(i*20));
             i++;
