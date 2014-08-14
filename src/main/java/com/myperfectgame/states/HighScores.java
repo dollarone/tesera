@@ -34,15 +34,19 @@ public class HighScores extends BasicGameState{
     }
     public void render(GameContainer gc, StateBasedGame sbg, Graphics g) throws SlickException{
         g.setBackground(Color.black);
-        g.drawString("High Scores",250,180);
+        g.drawString("High Scores",250,130);
 
         int i = 1;
         int max = 10;
 
+        g.drawString("Rank:",180,180);
+        g.drawString("Score:",240,180);
+        g.drawString("Name:",340,180);
+
         for(Stats stat : ((Game)sbg).getSortedHighScores()) {
-            g.drawString("" + i,230,200+(i*20));
-            g.drawString("Score:",250,200+(i*20));
-            g.drawString(stat.getScore() + "",320,200+(i*20));
+            g.drawString("" + i,180,200+(i*20));
+            g.drawString(stat.getScore() + "",240,200+(i*20));
+
             i++;
             if(max==i) break;
         }
